@@ -1,0 +1,22 @@
+[package]
+name = "stakker_log"
+version = "0.0.1"
+authors = ["Jim Peters <jim@uazu.net>"]
+edition = "2018"
+
+description = "Logging support for Stakker"
+license = "MIT/Apache-2.0"
+readme = "README.md"
+
+repository = "https://github.com/uazu/stakker_log"
+documentation = "https://docs.rs/stakker_log"
+
+keywords = [ "stakker", "log", "metrics", "tracing", "telemetry" ]
+categories = [ "asynchronous", "concurrency", "data-structures" ]
+
+[badges]
+maintenance = { status = "actively-developed" }
+
+[dependencies]
+#stakker = { path = "../stakker", features = ["logger"] }
+stakker = { version = "0.2.0-beta.1", features = ["logger"] }
