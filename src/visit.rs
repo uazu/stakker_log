@@ -96,9 +96,7 @@ macro_rules! visit_as_display {
 }
 
 visit_as_display!(char);
-#[cfg(integer128)]
 visit_as_display!(u128);
-#[cfg(integer128)]
 visit_as_display!(i128);
 
 // Array-like objects
