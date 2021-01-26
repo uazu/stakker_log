@@ -16,17 +16,22 @@
 //! key-value pairs, followed by a format-string and its arguments.
 //!
 //! For [`audit!`], `[cx]` comes first, followed by a tag for the
-//! record (which can either be a plain identifier or a literal
-//! string), followed by key-value pairs.
+//! record, followed by key-value pairs.  The tag will normally be a
+//! plain identifier, but it could also be a literal string or an
+//! expression in parentheses which will be formatted to generate the
+//! tag.
 //!
-//! Where the call is not being made from an actor context, `[core]`
-//! may be passed instead of `[cx]`, which gives a `LogID` of zero.
-//! It's possible to log against a specific actor or other `LogID`
-//! source by using `[source, core]` instead of `[cx]`, which takes
-//! the `LogID` from that source using a `source.access_log_id()`
-//! call.
+//! `[cx]` can refer to either an actor context (`stakker::Cx`) or a
+//! [`LogCx`].  Where the call is not being made from a context that
+//! provides a `LogID`, `[core]` may be passed instead of `[cx]`,
+//! which gives a `LogID` of zero.  It's possible to log against a
+//! specific actor or other `LogID` source by using `[source, core]`
+//! instead of `[cx]`, which takes the `LogID` from that source using
+//! a `source.access_log_id()` call.  (In general the `[a]` form must
+//! support `a.access_log_id()` and `a.access_core()`, and the `[a,b]`
+//! form must support `a.access_log_id()` and `b.access_core()`.)
 //!
-//! The most general form of a key-value pair is `"key": expr`, but
+//! For key-value pairs, the most general form is `"key": expr`, but
 //! there are a number of shortcuts as follows:
 //!
 //! Shortcut | Equivalent
@@ -49,6 +54,7 @@
 //! primitive instead of a string, you could also output a structured
 //! value such as an array or map to represent your type.
 //!
+//! [`LogCx`]: struct.LogCx.html
 //! [`Visitable`]: trait.Visitable.html
 //! [`audit!`]: macro.audit.html
 //! [`debug!`]: macro.debug.html
@@ -58,10 +64,12 @@
 //! [`warn!`]: macro.warn.html
 
 mod kvdisp;
+mod logcx;
 mod macros;
 mod visit;
 
 pub use kvdisp::KvSingleLine;
+pub use logcx::LogCx;
 pub use visit::Visitable;
 
 // Re-export so that macros can access stakker::LogLevel

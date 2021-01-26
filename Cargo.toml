@@ -1,6 +1,6 @@
 [package]
 name = "stakker_log"
-version = "0.0.2"
+version = "0.0.3"
 authors = ["Jim Peters <jim@uazu.net>"]
 edition = "2018"
 
@@ -18,5 +18,4 @@ categories = [ "asynchronous", "concurrency", "data-structures" ]
 maintenance = { status = "actively-developed" }
 
 [dependencies]
-#stakker = { path = "../stakker", features = ["logger"] }
-stakker = { version = "0.2", features = ["logger"] }
+stakker = { version = "0.2", features = ["logger"], path = "../stakker" }

@@ -66,6 +66,9 @@ macro_rules! audit {
     ( [$($cx:tt)+], $tag:literal $(, $($tail:tt)+)? ) => {{
         $crate::log!(Audit [$($cx)+] $(, $($tail)+)? , "{}", $tag);
     }};
+    ( [$($cx:tt)+], ($tag:expr) $(, $($tail:tt)+)? ) => {{
+        $crate::log!(Audit [$($cx)+] $(, $($tail)+)? , "{}", $tag);
+    }};
 }
 
 #[macro_export]

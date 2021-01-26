@@ -5,12 +5,18 @@ use std::fmt::Arguments;
 /// This trait allows a `stakker::LogVisitor` to visit various
 /// fundamental Rust types and collections.
 ///
-/// It maps them to the fixed set of `kv_*` methods available on the
-/// `stakker::LogVisitor`.  For types which must be formatted as a
-/// string, construct a `std::fmt::Arguments` instance using
-/// `format_args!` first, and then visit that.  For your own complex
-/// types which need structured output, you should write your own
-/// [`Visitable`] implementation.
+/// This allows all of those types to be used as values in the logging
+/// macros.  It does this by mapping them to the fixed set of `kv_*`
+/// methods available on the `stakker::LogVisitor`.  Most fundamental
+/// Rust types, plus map-like and array-like collections have a
+/// straightforward mapping.  Integer types larger than 64-bits are
+/// output as strings.  `Option` is handled by including the key-value
+/// pair for `Some`, or omitting it for `None`.
+///
+/// For other types which must be formatted as a string, construct a
+/// `std::fmt::Arguments` instance using `format_args!` first, and
+/// then visit that.  For your own complex types which need structured
+/// output, you should write your own [`Visitable`] implementation.
 ///
 /// For example:
 ///
@@ -24,6 +30,16 @@ use std::fmt::Arguments;
 /// [`Visitable`]: trait.Visitable.html
 pub trait Visitable {
     fn visit(&self, key: Option<&str>, output: &mut dyn LogVisitor);
+}
+
+// Option handling
+impl<T: Visitable> Visitable for Option<T> {
+    #[inline]
+    fn visit(&self, key: Option<&str>, output: &mut dyn LogVisitor) {
+        if let Some(ref v) = self {
+            v.visit(key, output);
+        }
+    }
 }
 
 // String handling
