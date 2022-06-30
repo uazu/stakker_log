@@ -54,6 +54,15 @@
 //! primitive instead of a string, you could also output a structured
 //! value such as an array or map to represent your type.
 //!
+//! # Logging output
+//!
+//! You can write you own code which accepts a `&dyn Fn(&mut dyn
+//! LogVisitor)`, and calls it to receive all the logging data.  There
+//! are also provided types for JSON output ([`KvToJson`]) and simple
+//! human-readable output ([`KvSingleLine`]).
+//!
+//! [`KvSingleLine`]: struct.KvSingleLine.html
+//! [`KvToJson`]: struct.KvToJson.html
 //! [`LogCx`]: struct.LogCx.html
 //! [`Visitable`]: trait.Visitable.html
 //! [`audit!`]: macro.audit.html
@@ -64,11 +73,13 @@
 //! [`warn!`]: macro.warn.html
 
 mod kvdisp;
+mod kvjson;
 mod logcx;
 mod macros;
 mod visit;
 
 pub use kvdisp::KvSingleLine;
+pub use kvjson::KvToJson;
 pub use logcx::LogCx;
 pub use visit::Visitable;
 
@@ -78,9 +89,6 @@ pub use stakker;
 
 // TODO: Add loggers that log to 'log' crate, 'slog' crate,
 // 'tracing-core', etc
-
-// TODO: Maybe add adapter to dump KVs or maybe whole record to JSON
-// (single-line, packed)
 
 #[cfg(test)]
 mod test;
